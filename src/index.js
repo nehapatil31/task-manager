@@ -10,59 +10,71 @@ const port = process.env.PORT || 3000
 app.use(express.json())
 
 //Create User
-app.post('/users', (req, res) => {
+app.post('/users', async (req, res) => {
     const user = new User(req.body)
-    user.save().then(() => {
+    try {
+        await user.save()
         res.status(201).send(user)
-    }).catch((error) => {
-        res.status(400).send(error)
-    })
+    } catch (e) {
+        res.status(400).send(e)
+    }
+    // user.save().then(() => {
+    //     res.status(201).send(user)
+    // }).catch((error) => {
+    //     res.status(400).send(error)
+    // })
 })
 
 //Create Task
-app.post('/tasks', (req, res) => {
+app.post('/tasks', async (req, res) => {
     const task = new Task(req.body)
-    task.save().then(() => {
+    try {
+        await task.save()
         res.status(201).send(task)
-    }).catch((error) => {
-        res.status(400).send(error)
-    })
+    } catch (e) {
+        res.status(400).send(e)
+    }
 })
 
 //Get all users
-app.get('/users', (req, res) => {
-    User.find({}).then((users) => {
+app.get('/users', async (req, res) => {
+    try {
+        const users = await User.find({})
         res.send(users)
-    }).catch((error) => {
-        res.status(500).send(error)
-    })
+    } catch (e) {
+        res.status(500).send(e)
+    }
 })
 //Get single user by id
-app.get('/users/:id', (req, res) => {
+app.get('/users/:id', async (req, res) => {
     const _id = req.params.id
-    User.findById(_id).then((user) => {
+    try {
+        const user = await User.findById(_id)
         res.send(user)
-    }).catch((error) => {
-        res.status(500).send(error)
-    })
+    } catch (e) {
+        res.status(500).send(e)
+    }
 })
 
 //Get all tasks
-app.get('/tasks', (req, res) => {
-    Task.find({}).then((tasks) => {
+app.get('/tasks', async (req, res) => {
+    try {
+        const tasks = await Task.find({})
         res.send(tasks)
-    }).catch((error) => {
-        res.status(500).send(error)
-    })
+    } catch (e) {
+        res.status(500).send(e)
+    }
+
 })
 //Get single task by id
-app.get('/tasks/:id', (req, res) => {
-    const _id = req.params.id
-    Task.findById(_id).then((task) => {
+app.get('/tasks/:id', async (req, res) => {
+    try {
+        const _id = req.params.id
+        const task = await Task.findById(_id)
         res.send(task)
-    }).catch((error) => {
-        res.status(500).send(error)
-    })
+    } catch (e) {
+        res.status(500).send(e)
+    }
 })
 
 app.listen(port, () => {
