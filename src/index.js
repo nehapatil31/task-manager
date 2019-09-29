@@ -13,6 +13,9 @@ var taskRouter = require('./routers/task')
 app.use(userRouter)
 app.use(taskRouter)
 
+// app.get('*', function(req, res) {
+//     res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+// });
 
 app.listen(port, () => {
     console.log("Searver is up on port " + port)
