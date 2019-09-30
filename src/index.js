@@ -1,5 +1,6 @@
 const express = require("express")
 require('./db/mongoose')
+const bcrypt = require('bcryptjs');
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -20,3 +21,14 @@ app.use(taskRouter)
 app.listen(port, () => {
     console.log("Searver is up on port " + port)
 })
+
+// myfunction = async () => {
+//     const password = 'abc123!'
+//     const hashedPassword = await bcrypt.hash(password, 8)
+//     console.log(hashedPassword)
+
+//     const isMatch = await bcrypt.compare('abc13!', hashedPassword)
+//     console.log(isMatch)
+
+// }
+// myfunction()
