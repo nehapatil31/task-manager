@@ -1,6 +1,6 @@
 const express = require("express")
 require('./db/mongoose')
-const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken")
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -19,7 +19,7 @@ app.use(taskRouter)
 // });
 
 app.listen(port, () => {
-    console.log("Searver is up on port " + port)
+    console.log("Server is up on port " + port)
 })
 
 // myfunction = async () => {
@@ -30,5 +30,14 @@ app.listen(port, () => {
 //     const isMatch = await bcrypt.compare('abc13!', hashedPassword)
 //     console.log(isMatch)
 
+// }
+// myfunction()
+
+// myfunction = async ()=>{
+//     const token = jwt.sign({ '_id':'acb'}, 'thisismynewcourse')
+//     console.log(token)
+
+//     const data = jwt.verify(token, 'thisismynewcourse')
+//     console.log(data)
 // }
 // myfunction()
