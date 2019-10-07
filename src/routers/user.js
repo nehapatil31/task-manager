@@ -30,15 +30,11 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
-//Get all users
-router.get('/users', auth, async (req, res) => {
-    try {
-        const users = await User.find({})
-        res.send(users)
-    } catch (e) {
-        res.status(500).send(e)
-    }
+//Get profile
+router.get('/users/me', auth, async (req, res) => {
+    res.send(req.user)
 })
+
 //Get single user by id
 router.get('/users/:id', async (req, res) => {
     const _id = req.params.id
