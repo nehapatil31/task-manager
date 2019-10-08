@@ -24,11 +24,37 @@ router.post('/users/login', async (req, res) => {
         const user = await User.findByCredential(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
 
-        res.send({user, token})
+        res.send({ user, token })
     } catch (e) {
         res.status(400).send()
     }
 })
+
+//Logout user
+router.post('/users/logout', auth, async (req, res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter((token) => {
+            return token.token !== req.token
+        })
+
+        await req.user.save()
+        res.send()
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+//LogoutAll user
+router.post('/users/logoutAll', auth, async (req, res) => {
+    try {
+        req.user.tokens = []
+
+        await req.user.save()
+        res.send()
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
 
 //Get profile
 router.get('/users/me', auth, async (req, res) => {
@@ -60,7 +86,7 @@ router.patch('/users/:id', async (req, res) => {
 
     try {
         const user = await User.findById(req.params.id)
-        updates.forEach((update)=>{
+        updates.forEach((update) => {
             user[update] = req.body[update]
         })
         await user.save()
