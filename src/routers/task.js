@@ -17,11 +17,21 @@ router.post('/tasks', auth, async (req, res) => {
     }
 })
 
-//Get all tasks
+//GET /tasks?completed=true
 router.get('/tasks', auth, async (req, res) => {
     try {
-        const tasks = await Task.find({ owner: req.user._id })
-        res.send(tasks)
+        // const tasks = await Task.find({ owner: req.user._id })
+        const match = {}
+
+        if (req.query.completed) {
+            match.completed = req.query.completed === 'true' 
+        }
+
+        await req.user.populate({
+            path: 'tasks',
+            match
+        }).execPopulate()
+        res.send(req.user.tasks)
     } catch (e) {
         res.status(500).send(e)
     }
@@ -73,7 +83,7 @@ router.patch('/tasks/:id', auth, async (req, res) => {
 //Delete task
 router.delete('/tasks/:id', auth, async (req, res) => {
     try {
-        const deletedTask = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id})
+        const deletedTask = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
         if (!deletedTask) {
             return res.status(404).send()
         }
