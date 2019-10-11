@@ -2,6 +2,10 @@ var express = require('express')
 var router = express.Router()
 const User = require('../models/user')
 const auth = require('../middleware/auth')
+const multer = require('multer')
+const upload = multer({
+    dest: 'avatars'
+})
 
 //Create User
 router.post('/users', async (req, res) => {
@@ -86,7 +90,7 @@ router.patch('/users/me', auth, async (req, res) => {
 })
 
 //Delete user
-router.delete('/users/me',auth, async (req, res) => {
+router.delete('/users/me', auth, async (req, res) => {
     try {
         req.user.remove()
         res.send(req.user)
@@ -95,5 +99,9 @@ router.delete('/users/me',auth, async (req, res) => {
     }
 })
 
+//upload user profile
+router.post('/users/me/avatar',upload.single('avatar'), (req, res) => {
+    res.send()
+})
 
 module.exports = router

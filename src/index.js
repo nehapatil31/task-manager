@@ -22,7 +22,10 @@ app.listen(port, () => {
 
 const multer = require('multer')
 const upload = multer({
-    dest: 'images'
+    dest: 'images',
+    limits:{
+        fileSize: 1000000      //File size - number in bytes
+    }
 })
 app.post('/upload', upload.single('upload'), (req, res) => {
     res.send()
